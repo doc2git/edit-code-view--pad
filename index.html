@@ -5,16 +5,16 @@
     <title>Edit code here, view the output write away!</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="//cdn.bootcss.com/codemirror/5.2.0/codemirror.min.js"></script>
+    <script src="./codemirror.min.js"></script>
     <link rel="stylesheet" href="//cdn.bootcss.com/codemirror/5.2.0/codemirror.min.css">
-    <script src="//cdn.bootcss.com/codemirror/5.2.0/mode/htmlmixed/htmlmixed.min.js"></script>
-    <script src="//cdn.bootcss.com/codemirror/5.2.0/mode/css/css.min.js"></script>
-    <script src="//cdn.bootcss.com/codemirror/5.2.0/mode/javascript/javascript.min.js"></script>
-    <script src="//cdn.bootcss.com/codemirror/5.2.0/mode/xml/xml.min.js"></script>
-    <script src="//cdn.bootcss.com/codemirror/5.2.0/addon/edit/closetag.min.js"></script>
-    <script src="//cdn.bootcss.com/codemirror/5.2.0/addon/edit/closebrackets.min.js"></script>
+    <script src="./htmlmixed.min.js"></script>
+    <script src="./css.min.js"></script>
+    <script src="./javascript.min.js"></script>
+    <script src="./xml.min.js"></script>
+    <script src="./closetag.min.js"></script>
+    <script src="./closebrackets.min.js"></script>
     <!--[if lt IE 9]>
-    <script src="//cdn.bootcss.com/html5shiv/r29/html5.min.js"></script>
+    <script src="./html5.min.js"></script>
     <![endif]-->
 </head>
 <body>
@@ -183,6 +183,8 @@ new Vue({
         indentUnit: 4,
         indentWithTabs: true
     });
+    console.log(editor, '186---');
+    console.log(editor.getValue(), '186---');
 
     window.addEventListener("resize", autodivheight);
 
@@ -206,6 +208,7 @@ new Vue({
 
     function submitTryit() {
         var text = editor.getValue();
+        console.log(text, '209---, index.html');
         var patternHtml = /<html[^>]*>((.|[\n\r])*)<\/html>/im
         var patternHead = /<head[^>]*>((.|[\n\r])*)<\/head>/im
         var array_matches_head = patternHead.exec(text);
@@ -226,6 +229,7 @@ new Vue({
         } else {
             text = basepath + text;
         }
+        console.log(text, '230---');
         var ifr = document.createElement("iframe");
         ifr.setAttribute("frameborder", "0");
         ifr.setAttribute("id", "iframeResult");
@@ -233,14 +237,22 @@ new Vue({
         document.getElementById("iframewrapper").appendChild(ifr);
 
         var ifrw = (ifr.contentWindow) ? ifr.contentWindow : (ifr.contentDocument.document) ? ifr.contentDocument.document : ifr.contentDocument;
+        window.ifrw = ifrw;
+        console.log('+++', ifr, ifrw, '237---');
         ifrw.document.open();
         ifrw.document.write(text);
         ifrw.document.close();
+        console.log(ifrw, '242---', ifrw.document);
         autodivheight();
     }
 
+    var textareaFrame = document.getElementsByTagName('iframe');
+//    console.log(typeof textareaFrame, 'real_247---');
+//    var textareaFrame = document.getElementById('iframeResult');
     submitTryit();
+    console.log(window.ifrw.document);
     autodivheight();
+    console.log(window.ifrw.document);
 </script>
 <div style="display:none;">
     <!--<script>-->
@@ -255,3 +267,6 @@ new Vue({
 </div>
 < /body>
 < /html>
+<script>
+    console.log(window.ifrw.document);
+</script>
